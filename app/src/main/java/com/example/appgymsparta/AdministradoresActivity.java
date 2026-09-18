@@ -2,16 +2,10 @@ package com.example.appgymsparta;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,9 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.appgymsparta.data.entity.Administrador;
 import com.example.appgymsparta.viewmodel.AdministradorViewModel;
 import com.google.android.material.button.MaterialButton;
-
-import java.time.format.DateTimeFormatter;
-import java.util.concurrent.Executors;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class AdministradoresActivity extends AppCompatActivity {
 
@@ -42,8 +35,6 @@ public class AdministradoresActivity extends AppCompatActivity {
     private MaterialButton btnEditarDatos;
     private MaterialButton btnCambiarPassword;
     private MaterialButton btnVolver;
-
-    private DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +55,7 @@ public class AdministradoresActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (administradorViewModel != null) {
-            administradorViewModel.obtenerTodos();
-        }
+        cargarPerfilAdminActual();
     }
 
     private void initViews() {
@@ -86,19 +75,26 @@ public class AdministradoresActivity extends AppCompatActivity {
 
     private void setupViewModel() {
         administradorViewModel = new ViewModelProvider(this).get(AdministradorViewModel.class);
+        cargarPerfilAdminActual();
+    }
 
-        // Cargar administrador real almacenado en Room
-        administradorViewModel.obtenerTodos().observe(this, listaAdmins -> {
-            if (listaAdmins != null && !listaAdmins.isEmpty()) {
-                this.adminActual = listaAdmins.get(0);
-                mostrarDatosAdmin(adminActual);
-                btnEditarDatos.setEnabled(true);
-                btnCambiarPassword.setEnabled(true);
-            } else {
-                this.adminActual = null;
-                mostrarEstadoSinAdmin();
-            }
-        });
+    private void cargarPerfilAdminActual() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            administradorViewModel.buscarPorId(currentUser.getUid()).observe(this, admin -> {
+                if (admin != null) {
+                    this.adminActual = admin;
+                    mostrarDatosAdmin(admin);
+                    btnEditarDatos.setEnabled(true);
+                    btnCambiarPassword.setEnabled(true);
+                } else {
+                    this.adminActual = null;
+                    mostrarEstadoSinAdmin();
+                }
+            });
+        } else {
+            mostrarEstadoSinAdmin();
+        }
     }
 
     private void mostrarEstadoSinAdmin() {
@@ -113,7 +109,7 @@ public class AdministradoresActivity extends AppCompatActivity {
         tvStatusBadge.setBackgroundResource(R.drawable.bg_status_inactive);
         tvStatusBadge.setTextColor(getColor(R.color.red_accent));
 
-        btnEditarDatos.setEnabled(true);
+        btnEditarDatos.setEnabled(false);
         btnCambiarPassword.setEnabled(false);
     }
 
@@ -132,7 +128,7 @@ public class AdministradoresActivity extends AppCompatActivity {
                 ? admin.getTelefono().trim() : "No registrado";
         tvTelefonoVal.setText(tel);
 
-        String fecha = admin.getFechaRegistro() != null ? admin.getFechaRegistro().format(fmt) : "-";
+        String fecha = admin.getFechaRegistro() != null ? admin.getFechaRegistro() : "-";
         tvFechaRegistroVal.setText(fecha);
 
         if (admin.isEstado()) {
@@ -156,16 +152,16 @@ public class AdministradoresActivity extends AppCompatActivity {
 
     private void abrirEditarAdministrador() {
         Intent intent = new Intent(AdministradoresActivity.this, EditarAdministradorActivity.class);
-        if (adminActual != null) {
-            intent.putExtra("idAdministrador", adminActual.getIdAdministrador());
+        if (adminActual != null && adminActual.getId() != null) {
+            intent.putExtra("idAdministrador", adminActual.getId());
         }
         startActivity(intent);
     }
 
     private void abrirCambiarContrasena() {
         Intent intent = new Intent(AdministradoresActivity.this, CambiarContrasenaActivity.class);
-        if (adminActual != null) {
-            intent.putExtra("idAdministrador", adminActual.getIdAdministrador());
+        if (adminActual != null && adminActual.getId() != null) {
+            intent.putExtra("idAdministrador", adminActual.getId());
         }
         startActivity(intent);
     }

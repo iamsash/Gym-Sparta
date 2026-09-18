@@ -13,19 +13,19 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.appgymsparta.data.entity.Administrador;
+import com.example.appgymsparta.data.repository.AdministradorRepository;
 import com.example.appgymsparta.viewmodel.AdministradorViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.time.LocalDate;
-import java.util.concurrent.Executors;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class EditarAdministradorActivity extends AppCompatActivity {
 
     private AdministradorViewModel administradorViewModel;
     private Administrador adminActual;
-    private int idAdministrador = -1;
+    private String idAdministrador = null;
 
     private ImageView btnBack;
     private TextInputLayout tilNombres;
@@ -53,7 +53,7 @@ public class EditarAdministradorActivity extends AppCompatActivity {
         });
 
         if (getIntent() != null && getIntent().hasExtra("idAdministrador")) {
-            idAdministrador = getIntent().getIntExtra("idAdministrador", -1);
+            idAdministrador = getIntent().getStringExtra("idAdministrador");
         }
 
         initViews();
@@ -78,33 +78,17 @@ public class EditarAdministradorActivity extends AppCompatActivity {
     private void setupViewModel() {
         administradorViewModel = new ViewModelProvider(this).get(AdministradorViewModel.class);
 
-        if (idAdministrador != -1) {
-            administradorViewModel.buscarPorId(idAdministrador).observe(this, admin -> {
+        FirebaseUser current = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = (idAdministrador != null && !idAdministrador.isEmpty()) ? idAdministrador : (current != null ? current.getUid() : null);
+
+        if (uid != null) {
+            administradorViewModel.buscarPorId(uid).observe(this, admin -> {
                 if (admin != null) {
                     this.adminActual = admin;
                     cargarDatos(admin);
-                } else {
-                    cargarAdminPorDefecto();
                 }
             });
-        } else {
-            cargarAdminPorDefecto();
         }
-    }
-
-    private void cargarAdminPorDefecto() {
-        administradorViewModel.obtenerTodos().observe(this, listaAdmins -> {
-            if (listaAdmins != null && !listaAdmins.isEmpty()) {
-                if (adminActual == null) {
-                    this.adminActual = listaAdmins.get(0);
-                    cargarDatos(adminActual);
-                }
-            } else if (adminActual == null) {
-                // Si la base de datos está vacía, crear instancia temporal
-                this.adminActual = new Administrador("Administrador", "SPARTA", "admin", "admin123", "999888777", true, LocalDate.now());
-                cargarDatos(adminActual);
-            }
-        });
     }
 
     private void cargarDatos(Administrador admin) {
@@ -151,39 +135,34 @@ public class EditarAdministradorActivity extends AppCompatActivity {
             return;
         }
 
-        if (adminActual == null) {
-            adminActual = new Administrador(nombres, apellidos, usuario, "admin123", telefono, true, LocalDate.now());
-        } else {
+        if (adminActual != null) {
             adminActual.setNombres(nombres);
             adminActual.setApellidos(apellidos);
             adminActual.setUsuario(usuario);
             adminActual.setTelefono(telefono);
+        } else {
+            Toast.makeText(this, "No se encontró el perfil de administrador a modificar", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         isGuardando = true;
         btnGuardarCambios.setEnabled(false);
 
-        Executors.newSingleThreadExecutor().execute(() -> {
-            long filasAfectadas;
-            if (adminActual.getIdAdministrador() > 0) {
-                filasAfectadas = administradorViewModel.actualizar(adminActual);
-            } else {
-                filasAfectadas = administradorViewModel.insertar(adminActual);
-                if (filasAfectadas > 0) {
-                    adminActual.setIdAdministrador((int) filasAfectadas);
-                }
-            }
-
-            runOnUiThread(() -> {
+        administradorViewModel.actualizar(adminActual, new AdministradorRepository.OnResultListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
                 isGuardando = false;
                 btnGuardarCambios.setEnabled(true);
-                if (filasAfectadas > 0) {
-                    Toast.makeText(EditarAdministradorActivity.this, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(EditarAdministradorActivity.this, "Error al guardar en Room", Toast.LENGTH_SHORT).show();
-                }
-            });
+                Toast.makeText(EditarAdministradorActivity.this, "Perfil actualizado exitosamente en Firestore", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                isGuardando = false;
+                btnGuardarCambios.setEnabled(true);
+                Toast.makeText(EditarAdministradorActivity.this, "Error al actualizar perfil en Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
