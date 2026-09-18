@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "815677896306",
+    "project_id": "gym-sparta-c0ae0",
+    "storage_bucket": "gym-sparta-c0ae0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815677896306:android:d5883e98854df65889b4eb",
+        "android_client_info": {
+          "package_name": "com.example.appgymsparta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAclZBw4TwcxjtTv-DeCXB-5fxm7XhYiEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

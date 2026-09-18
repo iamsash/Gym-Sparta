@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_stat_card"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="16dp">
+
+    <!-- Avatar / Icono -->
+    <ImageView
+        android:id="@+id/imgBadgeIcon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:background="@drawable/bg_icon_box"
+        android:contentDescription="@string/app_name"
+        android:padding="9dp"
+        android:src="@drawable/ic_card_membership"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nombre del Cliente -->
+    <TextView
+        android:id="@+id/tvNombreCliente"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-bold"
+        android:textColor="@color/text_white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/tvPrecioPagado"
+        app:layout_constraintStart_toEndOf="@id/imgBadgeIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Juan Pérez" />
+
+    <!-- Precio Pagado -->
+    <TextView
+        android:id="@+id/tvPrecioPagado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-bold"
+        android:textColor="@color/red_accent"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="S/ 120.00" />
+
+    <!-- Nombre de la Membresía -->
+    <TextView
+        android:id="@+id/tvNombreMembresia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/text_gray"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@id/tvStatusBadge"
+        app:layout_constraintStart_toEndOf="@id/imgBadgeIcon"
+        app:layout_constraintTop_toBottomOf="@id/tvNombreCliente"
+        tools:text="Plan Mensual (30 días)" />
+
+    <!-- Fechas Inicio & Vencimiento -->
+    <TextView
+        android:id="@+id/tvFechas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/text_muted"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/tvStatusBadge"
+        app:layout_constraintStart_toEndOf="@id/imgBadgeIcon"
+        app:layout_constraintTop_toBottomOf="@id/tvNombreMembresia"
+        tools:text="📅 04/09/2026 ➔ 04/10/2026" />
+
+    <!-- Badge Estado -->
+    <TextView
+        android:id="@+id/tvStatusBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_status_active"
+        android:fontFamily="sans-serif-bold"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/badge_green"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imgChevron"
+        app:layout_constraintTop_toBottomOf="@id/tvPrecioPagado"
+        tools:text="● ACTIVA" />
+
+    <ImageView
+        android:id="@+id/imgChevron"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="4dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPrecioPagado" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

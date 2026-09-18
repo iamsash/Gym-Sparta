@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_stat_card"
+    android:padding="12dp">
+
+    <!-- Día Badge -->
+    <TextView
+        android:id="@+id/tvDiaBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_icon_box"
+        android:fontFamily="sans-serif-black"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/red_accent"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="LUNES" />
+
+    <!-- Nombre Ejercicio -->
+    <TextView
+        android:id="@+id/tvEjercicio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-bold"
+        android:textColor="@color/text_white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@id/btnEditarEjercicio"
+        app:layout_constraintStart_toEndOf="@id/tvDiaBadge"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Press Banca Plano" />
+
+    <!-- Grupo Muscular -->
+    <TextView
+        android:id="@+id/tvGrupoMuscular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/text_gray"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/btnEditarEjercicio"
+        app:layout_constraintStart_toEndOf="@id/tvDiaBadge"
+        app:layout_constraintTop_toBottomOf="@id/tvEjercicio"
+        tools:text="Pecho / Tríceps" />
+
+    <!-- Series, Repeticiones, Peso, Descanso -->
+    <TextView
+        android:id="@+id/tvDetallesTecnicos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/badge_green"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/btnEditarEjercicio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDiaBadge"
+        tools:text="💪 4 series × 8 reps | 60.0 kg | 90s descanso" />
+
+    <!-- Botón Editar Ejercicio -->
+    <ImageView
+        android:id="@+id/btnEditarEjercicio"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/bg_icon_box"
+        android:clickable="true"
+        android:contentDescription="@string/app_name"
+        android:focusable="true"
+        android:padding="6dp"
+        android:src="@drawable/ic_more"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnEliminarEjercicio"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/text_gray" />
+
+    <!-- Botón Eliminar Ejercicio -->
+    <ImageView
+        android:id="@+id/btnEliminarEjercicio"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_icon_box"
+        android:clickable="true"
+        android:contentDescription="@string/app_name"
+        android:focusable="true"
+        android:padding="6dp"
+        android:src="@drawable/ic_warning"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/red_accent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

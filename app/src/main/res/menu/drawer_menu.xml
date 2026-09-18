@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_notifications"
+            android:icon="@drawable/ic_notifications"
+            android:title="Notificaciones" />
+        <item
+            android:id="@+id/drawer_admins"
+            android:icon="@drawable/ic_person"
+            android:title="Administradores" />
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/ic_lock"
+            android:title="Configuración" />
+        <item
+            android:id="@+id/drawer_about"
+            android:icon="@drawable/ic_gym_logo"
+            android:title="Acerca del sistema" />
+    </group>
+    <item android:title="Cuenta">
+        <menu>
+            <item
+                android:id="@+id/drawer_logout"
+                android:icon="@drawable/ic_arrow_back"
+                android:title="Cerrar sesión" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">AppGymSparta</string>
+    <string name="gym_title">GYM SPARTA</string>
+    <string name="gym_slogan">FUERZA • DISCIPLINA • ÉXITO</string>
+    <string name="login_title">INICIAR SESIÓN</string>
+    <string name="login_subtitle">Bienvenido de vuelta</string>
+    <string name="label_username">Usuario</string>
+    <string name="label_password">Contraseña</string>
+    <string name="remember_me">Recordarme</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="btn_login">INGRESAR</string>
+    <string name="or_continue_with">O continúa con</string>
+    <string name="btn_google">Google</string>
+    <string name="btn_facebook">Facebook</string>
+    <string name="no_account_register">¿No tienes cuenta?  <font color="#FF2E3B">Regístrate</font></string>
+    <string name="app_version">GYM SPARTA v1.0.0</string>
+
+    <!-- Dashboard Strings -->
+    <string name="dashboard_greeting">Hola, Administrador 👋</string>
+    <string name="dashboard_subtitle">Disciplina hoy, resultados mañana</string>
+
+    <string name="banner_title">DISCIPLINA ES LA CLAVE</string>
+    <string name="banner_subtitle">Un cuerpo más fuerte comienza con una mente disciplinada.</string>
+
+    <string name="stat_active_members">Miembros activos</string>
+    <string name="stat_active_members_val">128</string>
+    <string name="stat_active_members_ind">+12%</string>
+
+    <string name="stat_attendance_today">Asistencias hoy</string>
+    <string name="stat_attendance_today_val">86</string>
+    <string name="stat_attendance_today_ind">+8%</string>
+
+    <string name="stat_income_month">Ingresos del mes</string>
+    <string name="stat_income_month_val">S/ 4,850</string>
+    <string name="stat_income_month_ind">+15%</string>
+
+    <string name="stat_expirations">Vencimientos</string>
+    <string name="stat_expirations_val">12</string>
+    <string name="stat_expirations_ind">Próximos 7 días</string>
+
+    <string name="section_quick_access">Accesos rápidos</string>
+    <string name="action_clients">Clientes</string>
+    <string name="action_memberships">Membresías</string>
+    <string name="action_inscriptions">Inscripciones</string>
+    <string name="action_payments">Pagos</string>
+    <string name="action_attendance">Asistencias</string>
+    <string name="action_routines">Rutinas</string>
+
+    <string name="bottom_motto_title">UN CUERPO MÁS FUERTE</string>
+    <string name="bottom_motto_subtitle">QUE TUS EXCUSAS</string>
+
+    <string name="nav_home">Inicio</string>
+    <string name="nav_clients">Clientes</string>
+    <string name="nav_routines">Rutinas</string>
+    <string name="nav_reports">Reportes</string>
+    <string name="nav_payments">Pagos</string>
+</resources>

@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AppGymSparta" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">#250409</item>
+        <item name="android:navigationBarColor">#08080B</item>
+        <item name="colorPrimary">@color/red_primary</item>
+        <item name="colorSecondary">@color/red_accent</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+    </style>
+
+    <style name="Theme.AppGymSparta" parent="Base.Theme.AppGymSparta" />
+</resources>
