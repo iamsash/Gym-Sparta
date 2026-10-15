@@ -101,7 +101,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         editor.putString(KEY_DIRECCION, direccion);
         editor.apply();
 
-        Toast.makeText(this, "Configuración guardada correctamente", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Configuración guardada correctamente para: " + nombre, Toast.LENGTH_SHORT).show();
         finish();
     }
 }

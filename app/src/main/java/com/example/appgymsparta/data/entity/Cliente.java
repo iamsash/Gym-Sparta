@@ -1,52 +1,46 @@
 package com.example.appgymsparta.data.entity;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Entity(tableName = "clientes")
 public class Cliente {
-
-    @PrimaryKey(autoGenerate = true)
-    private int idCliente; // Mantenido para Room y compatibilidad temporal con otras entidades
 
     @DocumentId
     private String id;
 
+    private int idCliente;
     private String dni;
     private String nombres;
     private String apellidos;
     private String telefono;
+    private String email;
     private String sexo;
     private String fechaRegistro;
     private boolean estado;
 
-    // Constructor vacío (requerido por Firestore y Room)
+
+    // Constructor vacío (requerido por Firestore)
     public Cliente() {
     }
 
     // Constructor completo con ID String (para Firestore)
-    @Ignore
-    public Cliente(String id, String dni, String nombres, String apellidos, String telefono, String sexo, String fechaRegistro, boolean estado) {
+    public Cliente(String id, String dni, String nombres, String apellidos, String telefono,String email, String sexo, String fechaRegistro, boolean estado) {
         this.id = id;
         this.dni = dni;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.telefono = telefono;
+        this.email = email;
         this.sexo = sexo;
         this.fechaRegistro = fechaRegistro;
         this.estado = estado;
     }
 
-    // Constructor sin ID (para inserciones con ID autogenerado en Firestore)
-    @Ignore
-    public Cliente(String dni, String nombres, String apellidos, String telefono, String sexo, String fechaRegistro, boolean estado) {
+    // Constructor sin ID (para nuevos registros)
+    public Cliente(String dni, String nombres, String apellidos, String telefono, String email,String sexo, String fechaRegistro, boolean estado) {
         this.dni = dni;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -56,13 +50,13 @@ public class Cliente {
         this.estado = estado;
     }
 
-    // Constructor compatible con LocalDate (para registro)
-    @Ignore
-    public Cliente(String dni, String nombres, String apellidos, String telefono, String sexo, LocalDate fechaRegistro, boolean estado) {
+    // Constructor compatible con LocalDate
+    public Cliente(String dni, String nombres, String apellidos, String telefono,String email, String sexo, LocalDate fechaRegistro, boolean estado) {
         this.dni = dni;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.telefono = telefono;
+        this.email = email;
         this.sexo = sexo;
         if (fechaRegistro != null) {
             this.fechaRegistro = fechaRegistro.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -125,6 +119,12 @@ public class Cliente {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email){this.email =email;}
 
     public String getSexo() {
         return sexo;

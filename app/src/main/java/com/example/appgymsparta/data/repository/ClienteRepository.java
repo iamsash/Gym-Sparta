@@ -66,6 +66,7 @@ public class ClienteRepository {
     }
 
     // Insertar un nuevo cliente de forma asíncrona
+
     public void insertar(Cliente cliente, OnResultListener<String> listener) {
         clientesRef.add(cliente)
                 .addOnSuccessListener(documentReference -> {

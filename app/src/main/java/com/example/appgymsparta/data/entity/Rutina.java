@@ -1,20 +1,14 @@
 package com.example.appgymsparta.data.entity;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Entity(tableName = "rutinas")
 public class Rutina {
 
-    @PrimaryKey(autoGenerate = true)
-    private int idRutina; // Mantenido para Room y compatibilidad temporal
+    private int idRutina;
 
     @DocumentId
     private String id;
@@ -27,12 +21,11 @@ public class Rutina {
     private String fechaInicio;
     private boolean estado;
 
-    // Constructor vacío (requerido por Firestore y Room)
+    // Constructor vacío (requerido por Firestore)
     public Rutina() {
     }
 
     // Constructor completo con IDs String (para Firestore)
-    @Ignore
     public Rutina(String id, String idCliente, String nombreCliente, String nombre, String objetivo, String nivel, String fechaInicio, boolean estado) {
         this.id = id;
         this.idCliente = idCliente;
@@ -45,7 +38,6 @@ public class Rutina {
     }
 
     // Constructor para nuevos registros en Firestore
-    @Ignore
     public Rutina(String idCliente, String nombreCliente, String nombre, String objetivo, String nivel, LocalDate fechaInicio, boolean estado) {
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;

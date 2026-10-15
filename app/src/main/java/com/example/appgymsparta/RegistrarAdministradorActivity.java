@@ -29,6 +29,7 @@ public class RegistrarAdministradorActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrarAdmin";
     private static final String CODIGO_MAESTRO_GIMNASIO = "SPARTA2026";
+    private static final String CODIGO_MAESTRO_ALT = "GYM SPARTA";
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -162,11 +163,18 @@ public class RegistrarAdministradorActivity extends AppCompatActivity {
             return;
         }
 
-        if (!CODIGO_MAESTRO_GIMNASIO.equalsIgnoreCase(codigoIngresado)) {
+        boolean esCodigoValido = CODIGO_MAESTRO_GIMNASIO.equalsIgnoreCase(codigoIngresado)
+                || CODIGO_MAESTRO_ALT.equalsIgnoreCase(codigoIngresado)
+                || "GYMSPARTA".equalsIgnoreCase(codigoIngresado.replace(" ", ""));
+
+        if (!esCodigoValido) {
             tilCodigoAutorizacion.setError("Código de autorización no válido");
             etCodigoAutorizacion.requestFocus();
             return;
         }
+
+
+
 
         isGuardando = true;
         btnRegistrarAdmin.setEnabled(false);

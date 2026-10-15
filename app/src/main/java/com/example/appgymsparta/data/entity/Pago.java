@@ -1,42 +1,35 @@
 package com.example.appgymsparta.data.entity;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Entity(tableName = "pagos")
 public class Pago {
 
-    @PrimaryKey(autoGenerate = true)
-    private int idPago; // Mantenido para Room y compatibilidad temporal
+    private int idPago;
 
     @DocumentId
     private String id;
 
-    private String idInscripcion; // Nullable (null para Acceso diario)
+    private String idInscripcion;
     private String idCliente;
     private String nombreCliente;
     private String nombreMembresia;
 
-    private String tipoPago; // "Membresía" o "Acceso diario"
+    private String tipoPago;
     private double monto;
     private String fechaPago;
     private String metodoPago;
     private String numeroOperacion;
     private String observacion;
 
-    // Constructor vacío (requerido por Firestore y Room)
+    // Constructor vacío (requerido por Firestore)
     public Pago() {
     }
 
     // Constructor completo con IDs String (para Firestore)
-    @Ignore
     public Pago(String id, String idInscripcion, String idCliente, String nombreCliente, String nombreMembresia, String tipoPago, double monto, String fechaPago, String metodoPago, String numeroOperacion, String observacion) {
         this.id = id;
         this.idInscripcion = idInscripcion;
@@ -51,8 +44,7 @@ public class Pago {
         this.observacion = observacion;
     }
 
-    // Constructor sin ID de documento (para nuevos pagos en Firestore)
-    @Ignore
+    // Constructor sin ID de documento (para nuevos registros)
     public Pago(String idInscripcion, String idCliente, String nombreCliente, String nombreMembresia, String tipoPago, double monto, LocalDateTime fechaPago, String metodoPago, String numeroOperacion, String observacion) {
         this.idInscripcion = idInscripcion;
         this.idCliente = idCliente;

@@ -174,4 +174,10 @@ public class ClienteViewModel extends AndroidViewModel {
     public LiveData<Cliente> buscarPorId(int id) {
         return buscarPorId(String.valueOf(id));
     }
+
+
+
+    public LiveData<Integer>obtenerConteoClientesActivos(){
+        return clienteRepository.contarActivos();
+    }
 }

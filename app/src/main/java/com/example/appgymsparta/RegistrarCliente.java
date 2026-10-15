@@ -1,7 +1,9 @@
 package com.example.appgymsparta;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -37,10 +39,13 @@ public class RegistrarCliente extends AppCompatActivity {
     private TextInputLayout tilNombres;
     private TextInputLayout tilApellidos;
     private TextInputLayout tilTelefono;
+    private TextInputLayout tilEmail;
     private TextInputEditText etDni;
     private TextInputEditText etNombres;
     private TextInputEditText etApellidos;
     private TextInputEditText etTelefono;
+    private TextInputEditText etEmail;
+
     private Spinner spSexo;
     private MaterialButton btnGuardarCliente;
     private MaterialButton btnCancelar;
@@ -84,10 +89,12 @@ public class RegistrarCliente extends AppCompatActivity {
         tilNombres = findViewById(R.id.tilNombres);
         tilApellidos = findViewById(R.id.tilApellidos);
         tilTelefono = findViewById(R.id.tilTelefono);
+        tilEmail= findViewById(R.id.tilEmail);
         etDni = findViewById(R.id.etDni);
         etNombres = findViewById(R.id.etNombres);
         etApellidos = findViewById(R.id.etApellidos);
         etTelefono = findViewById(R.id.etTelefono);
+        etEmail = findViewById(R.id.etEmail);
         spSexo = findViewById(R.id.spSexo);
         btnGuardarCliente = findViewById(R.id.btnGuardarCliente);
         btnCancelar = findViewById(R.id.btnCancelar);
@@ -116,6 +123,8 @@ public class RegistrarCliente extends AppCompatActivity {
                 etNombres.setText(cliente.getNombres());
                 etApellidos.setText(cliente.getApellidos());
                 etTelefono.setText(cliente.getTelefono());
+                etEmail.setText(cliente.getEmail() != null ? cliente.getEmail() : "");
+
 
                 if (cliente.getSexo() != null) {
                     if (cliente.getSexo().equalsIgnoreCase("Masculino")) {
@@ -132,6 +141,29 @@ public class RegistrarCliente extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
         btnCancelar.setOnClickListener(v -> finish());
         btnGuardarCliente.setOnClickListener(v -> procesarRegistroOEdicion());
+
+        // Escuchador para validación de DNI incorrecto en tiempo real
+        etDni.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String inputDni = s.toString().trim();
+                if (!inputDni.isEmpty()) {
+                    if (inputDni.length() != 8 || !inputDni.matches("\\d+")) {
+                        tilDni.setError("DNI incorrecto: Debe tener 8 dígitos numéricos");
+                    } else {
+                        tilDni.setError(null);
+                    }
+                } else {
+                    tilDni.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void procesarRegistroOEdicion() {
@@ -142,59 +174,68 @@ public class RegistrarCliente extends AppCompatActivity {
         tilNombres.setError(null);
         tilApellidos.setError(null);
         tilTelefono.setError(null);
+        tilEmail.setError(null);
 
         // Obtener valores limpios de espacios en blanco
         String dni = etDni.getText() != null ? etDni.getText().toString().trim() : "";
         String nombres = etNombres.getText() != null ? etNombres.getText().toString().trim() : "";
         String apellidos = etApellidos.getText() != null ? etApellidos.getText().toString().trim() : "";
         String telefono = etTelefono.getText() != null ? etTelefono.getText().toString().trim() : "";
+        String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
+
         String sexo = spSexo.getSelectedItem() != null ? spSexo.getSelectedItem().toString() : "Seleccionar";
 
-        // 1. Validación DNI obligatorio
+        // 1. VALIDACIÓN DE DNI INCORRECTO (Obligatorio, exactamente 8 dígitos y sólo números)
         if (TextUtils.isEmpty(dni)) {
-            tilDni.setError("El DNI es obligatorio");
+            tilDni.setError("DNI incorrecto: El DNI es obligatorio");
+            Toast.makeText(this, "Error: DNI incorrecto. El número de DNI es obligatorio", Toast.LENGTH_SHORT).show();
             etDni.requestFocus();
             return;
         }
 
-        // 2. Validación DNI exactamente 8 dígitos numéricos
         if (dni.length() != 8 || !dni.matches("\\d+")) {
-            tilDni.setError("El DNI debe tener exactamente 8 dígitos numéricos");
+            tilDni.setError("DNI incorrecto: Debe tener exactamente 8 dígitos numéricos");
+            Toast.makeText(this, "Error: DNI incorrecto. Ingrese un DNI válido de 8 dígitos numéricos", Toast.LENGTH_LONG).show();
             etDni.requestFocus();
             return;
         }
 
-        // 3. Validación Nombres obligatorios
+        // 2. Validación Nombres obligatorios
         if (TextUtils.isEmpty(nombres)) {
             tilNombres.setError("Los nombres son obligatorios");
             etNombres.requestFocus();
             return;
         }
 
-        // 4. Validación Apellidos obligatorios
+        // 3. Validación Apellidos obligatorios
         if (TextUtils.isEmpty(apellidos)) {
             tilApellidos.setError("Los apellidos son obligatorios");
             etApellidos.requestFocus();
             return;
         }
 
-        // 5. Validación Teléfono (opcional, pero si se ingresa debe contener solo números)
+        // 4. Validación Teléfono (opcional, pero si se ingresa debe contener solo números)
         if (!TextUtils.isEmpty(telefono) && !telefono.matches("\\d+")) {
             tilTelefono.setError("El teléfono debe contener únicamente números");
             etTelefono.requestFocus();
             return;
         }
 
-        // 6. Validación Sexo obligatorio
+        // 5. Validación Sexo obligatorio
         if (spSexo.getSelectedItemPosition() == 0 || sexo.equalsIgnoreCase("Seleccionar")) {
             Toast.makeText(this, "Por favor, selecciona el sexo del cliente", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(email)) {
+            tilEmail.setError("El correo es obligatorio");
+            etEmail.requestFocus();
             return;
         }
 
         isGuardando = true;
         btnGuardarCliente.setEnabled(false);
 
-        // Validar DNI en Cloud Firestore mediante ClienteViewModel
+        // 2. VALIDACIÓN DE DNI DUPLICADO (Verificación en Cloud Firestore mediante ClienteViewModel)
         clienteViewModel.buscarPorDni(dni).observe(this, clienteDuplicado -> {
             if (!isGuardando) return;
 
@@ -202,7 +243,8 @@ public class RegistrarCliente extends AppCompatActivity {
             if (clienteDuplicado != null && (!isModoEdicion() || !clienteDuplicado.getId().equals(idClienteEditar))) {
                 isGuardando = false;
                 btnGuardarCliente.setEnabled(true);
-                tilDni.setError("El DNI " + dni + " ya se encuentra registrado");
+                tilDni.setError("DNI duplicado: El DNI " + dni + " ya se encuentra registrado");
+                Toast.makeText(RegistrarCliente.this, "Error: El DNI " + dni + " ya se encuentra registrado en el sistema", Toast.LENGTH_LONG).show();
                 etDni.requestFocus();
             } else {
                 if (isModoEdicion() && clienteExistenteEdicion != null) {
@@ -211,6 +253,7 @@ public class RegistrarCliente extends AppCompatActivity {
                     clienteExistenteEdicion.setNombres(nombres);
                     clienteExistenteEdicion.setApellidos(apellidos);
                     clienteExistenteEdicion.setTelefono(telefono);
+                    clienteExistenteEdicion.setEmail(email);
                     clienteExistenteEdicion.setSexo(sexo);
 
                     clienteViewModel.actualizar(clienteExistenteEdicion, new ClienteRepository.OnResultListener<Boolean>() {
@@ -236,6 +279,7 @@ public class RegistrarCliente extends AppCompatActivity {
                             nombres,
                             apellidos,
                             telefono,
+                            email,
                             sexo,
                             LocalDate.now(),
                             true

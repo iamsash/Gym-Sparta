@@ -39,9 +39,6 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.material)
 
-    // Room: se mantiene temporalmente
-    implementation(libs.room.runtime)
-    annotationProcessor(libs.room.compiler)
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.0.0"))

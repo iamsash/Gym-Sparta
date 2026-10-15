@@ -163,12 +163,14 @@ public class RegistrarMembresia extends AppCompatActivity {
 
         double precio;
         try {
+
             precio = Double.parseDouble(precioStr);
             if (precio < 0) {
                 tilPrecio.setError("El precio no puede ser negativo");
-                etPrecio.requestFocus();
                 return;
             }
+
+
         } catch (NumberFormatException e) {
             tilPrecio.setError("Ingresa un precio válido");
             etPrecio.requestFocus();

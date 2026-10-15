@@ -1,16 +1,10 @@
 package com.example.appgymsparta.data.entity;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
-@Entity(tableName = "membresias")
 public class Membresia {
 
-    @PrimaryKey(autoGenerate = true)
     private int idMembresia;
 
     @DocumentId
@@ -22,12 +16,11 @@ public class Membresia {
     private double precio;
     private boolean estado;
 
-    // Constructor vacío (requerido por Firestore y Room)
+    // Constructor vacío (requerido por Firestore)
     public Membresia() {
     }
 
     // Constructor completo con ID String (para Firestore)
-    @Ignore
     public Membresia(String id, String nombre, String descripcion, int duracionDias, double precio, boolean estado) {
         this.id = id;
         this.nombre = nombre;
@@ -37,8 +30,7 @@ public class Membresia {
         this.estado = estado;
     }
 
-    // Constructor sin ID (para inserciones con ID autogenerado)
-    @Ignore
+    // Constructor sin ID (para nuevos registros)
     public Membresia(String nombre, String descripcion, int duracionDias, double precio, boolean estado) {
         this.nombre = nombre;
         this.descripcion = descripcion;

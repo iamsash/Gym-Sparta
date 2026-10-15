@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+
+
     }
 
     private void initViews() {
@@ -111,25 +113,68 @@ public class MainActivity extends AppCompatActivity {
         if (Patterns.EMAIL_ADDRESS.matcher(userInput).matches()) {
             autenticarConFirebase(userInput, password);
         } else {
-            // Buscar correo por nombre de usuario en la colección 'administradores'
-            db.collection("administradores")
-                    .whereEqualTo("usuario", userInput)
-                    .limit(1)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                            String emailResuelto = doc.getString("email");
-                            if (emailResuelto != null && !emailResuelto.isEmpty()) {
-                                autenticarConFirebase(emailResuelto, password);
-                            } else {
-                                mostrarErrorCredenciales();
-                            }
+            // Buscar correo por nombre de usuario en la colección 'administradores' (insensible a mayúsculas/minúsculas y símbolo @)
+            buscarCorreoPorUsuarioYAutenticar(userInput, password);
+        }
+    }
+
+    private void buscarCorreoPorUsuarioYAutenticar(String usernameInput, String password) {
+        final String usernameLimpio = usernameInput.startsWith("@") ? usernameInput.substring(1).trim() : usernameInput.trim();
+
+        // 1. Coincidencia exacta con el campo 'usuario'
+        db.collection("administradores")
+                .whereEqualTo("usuario", usernameLimpio)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        String emailResuelto = doc.getString("email");
+                        if (emailResuelto != null && !emailResuelto.isEmpty()) {
+                            autenticarConFirebase(emailResuelto, password);
                         } else {
                             mostrarErrorCredenciales();
                         }
-                    });
-        }
+                    } else {
+                        // 2. Coincidencia con 'usuario' en minúsculas
+                        db.collection("administradores")
+                                .whereEqualTo("usuario", usernameLimpio.toLowerCase())
+                                .limit(1)
+                                .get()
+                                .addOnCompleteListener(task2 -> {
+                                    if (task2.isSuccessful() && task2.getResult() != null && !task2.getResult().isEmpty()) {
+                                        DocumentSnapshot doc = task2.getResult().getDocuments().get(0);
+                                        String emailResuelto = doc.getString("email");
+                                        if (emailResuelto != null && !emailResuelto.isEmpty()) {
+                                            autenticarConFirebase(emailResuelto, password);
+                                        } else {
+                                            mostrarErrorCredenciales();
+                                        }
+                                    } else {
+                                        // 3. Recorrido insensible a mayúsculas/minúsculas
+                                        db.collection("administradores").get().addOnCompleteListener(taskAll -> {
+                                            if (taskAll.isSuccessful() && taskAll.getResult() != null && !taskAll.getResult().isEmpty()) {
+                                                String emailEncontrado = null;
+                                                for (DocumentSnapshot doc : taskAll.getResult().getDocuments()) {
+                                                    String usrDoc = doc.getString("usuario");
+                                                    if (usrDoc != null && usrDoc.equalsIgnoreCase(usernameLimpio)) {
+                                                        emailEncontrado = doc.getString("email");
+                                                        break;
+                                                    }
+                                                }
+                                                if (emailEncontrado != null && !emailEncontrado.isEmpty()) {
+                                                    autenticarConFirebase(emailEncontrado, password);
+                                                } else {
+                                                    mostrarErrorCredenciales();
+                                                }
+                                            } else {
+                                                mostrarErrorCredenciales();
+                                            }
+                                        });
+                                    }
+                                });
+                    }
+                });
     }
 
     private void autenticarConFirebase(String email, String password) {

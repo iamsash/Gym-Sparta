@@ -1,17 +1,11 @@
 package com.example.appgymsparta.data.entity;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
-@Entity(tableName = "detalle_rutinas")
 public class DetalleRutina {
 
-    @PrimaryKey(autoGenerate = true)
-    private int idDetalle; // Mantenido para Room y compatibilidad temporal
+    private int idDetalle;
 
     @DocumentId
     private String id;
@@ -25,12 +19,11 @@ public class DetalleRutina {
     private double peso;
     private int descanso;
 
-    // Constructor vacío (requerido por Firestore y Room)
+    // Constructor vacío (requerido por Firestore)
     public DetalleRutina() {
     }
 
     // Constructor completo con IDs String (para Firestore)
-    @Ignore
     public DetalleRutina(String id, String idRutina, String ejercicio, String grupoMuscular, String dia, int series, int repeticiones, double peso, int descanso) {
         this.id = id;
         this.idRutina = idRutina;
@@ -44,7 +37,6 @@ public class DetalleRutina {
     }
 
     // Constructor para nuevos ejercicios en Firestore
-    @Ignore
     public DetalleRutina(String idRutina, String ejercicio, String grupoMuscular, String dia, int series, int repeticiones, double peso, int descanso) {
         this.idRutina = idRutina;
         this.ejercicio = ejercicio;

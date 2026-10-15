@@ -1,9 +1,5 @@
 package com.example.appgymsparta.data.entity;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
@@ -11,11 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-@Entity(tableName = "asistencias")
 public class Asistencia {
 
-    @PrimaryKey(autoGenerate = true)
-    private int idAsistencia; // Mantenido para Room y compatibilidad temporal
+    private int idAsistencia;
 
     @DocumentId
     private String id;
@@ -27,12 +21,11 @@ public class Asistencia {
     private String horaSalida;
     private String observacion;
 
-    // Constructor vacío (requerido por Firestore y Room)
+    // Constructor vacío (requerido por Firestore)
     public Asistencia() {
     }
 
     // Constructor completo con IDs String (para Firestore)
-    @Ignore
     public Asistencia(String id, String idCliente, String nombreCliente, String fecha, String horaIngreso, String horaSalida, String observacion) {
         this.id = id;
         this.idCliente = idCliente;
@@ -44,7 +37,6 @@ public class Asistencia {
     }
 
     // Constructor con objetos Java Time (para registro en Firestore)
-    @Ignore
     public Asistencia(String idCliente, String nombreCliente, LocalDate fecha, LocalTime horaIngreso, LocalTime horaSalida, String observacion) {
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
@@ -63,7 +55,6 @@ public class Asistencia {
     }
 
     // Constructor legacy para compatibilidad con int idCliente
-    @Ignore
     public Asistencia(int idCliente, LocalDate fecha, LocalTime horaIngreso, LocalTime horaSalida, String observacion) {
         this.idCliente = String.valueOf(idCliente);
         if (fecha != null) {

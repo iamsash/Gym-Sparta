@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,7 +50,14 @@ public class MembresiasActivity extends AppCompatActivity {
         setupRecyclerView();
         setupViewModel();
         setupListeners();
+
+
+
+        Toast.makeText(this, "Cargando catálogo de membresías de Gym Sparta...", Toast.LENGTH_SHORT).show();
+
     }
+
+
 
     @Override
     protected void onResume() {
@@ -87,6 +95,7 @@ public class MembresiasActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+
         btnBack.setOnClickListener(v -> finish());
         fabNewMembership.setOnClickListener(v -> abrirRegistrarMembresia());
         btnEmptyRegister.setOnClickListener(v -> abrirRegistrarMembresia());

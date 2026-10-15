@@ -1,20 +1,14 @@
 package com.example.appgymsparta.data.entity;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Entity(tableName = "administradores")
 public class Administrador {
 
-    @PrimaryKey(autoGenerate = true)
-    private int idAdministrador; // Mantenido para Room y compatibilidad temporal
+    private int idAdministrador;
 
     @DocumentId
     private String id; // UID de Firebase Auth
@@ -28,13 +22,14 @@ public class Administrador {
     private boolean estado;
     private String fechaRegistro;
 
-    // Constructor vacío (requerido por Firestore y Room)
+    private String direccion;
+
+    // Constructor vacío (requerido por Firestore)
     public Administrador() {
     }
 
     // Constructor completo para Firestore (con ID String)
-    @Ignore
-    public Administrador(String id, String nombres, String apellidos, String usuario, String email, String telefono, boolean estado, String fechaRegistro) {
+    public Administrador(String id, String nombres, String apellidos, String usuario, String email, String telefono, boolean estado, String fechaRegistro,String direccion) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -43,11 +38,11 @@ public class Administrador {
         this.telefono = telefono;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
+        this.direccion = direccion;
     }
 
-    // Constructor completo clásico para Room
-    @Ignore
-    public Administrador(int idAdministrador, String nombres, String apellidos, String usuario, String password, String telefono, boolean estado, LocalDate fechaRegistro) {
+    // Constructor completo clásico
+    public Administrador(int idAdministrador, String nombres, String apellidos, String usuario, String password, String telefono, boolean estado, LocalDate fechaRegistro, String direccion) {
         this.idAdministrador = idAdministrador;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -55,20 +50,21 @@ public class Administrador {
         this.password = password;
         this.telefono = telefono;
         this.estado = estado;
+        this.direccion = direccion;
         if (fechaRegistro != null) {
             this.fechaRegistro = fechaRegistro.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
     }
 
-    // Constructor sin ID (para inserciones)
-    @Ignore
-    public Administrador(String nombres, String apellidos, String usuario, String password, String telefono, boolean estado, LocalDate fechaRegistro) {
+    // Constructor sin ID
+    public Administrador(String nombres, String apellidos, String usuario, String password, String telefono, boolean estado, LocalDate fechaRegistro, String direccion) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.usuario = usuario;
         this.password = password;
         this.telefono = telefono;
         this.estado = estado;
+        this.direccion = direccion;
         if (fechaRegistro != null) {
             this.fechaRegistro = fechaRegistro.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         } else {
@@ -144,6 +140,13 @@ public class Administrador {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public boolean isEstado() {

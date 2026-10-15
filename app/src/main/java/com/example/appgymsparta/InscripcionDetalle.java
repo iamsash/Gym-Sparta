@@ -211,7 +211,7 @@ public class InscripcionDetalle extends AppCompatActivity {
         inscripcionViewModel.actualizar(inscripcionActual, new InscripcionRepository.OnResultListener<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                Toast.makeText(InscripcionDetalle.this, "Inscripción cancelada correctamente en Firestore", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InscripcionDetalle.this, "Inscripción de :" +inscripcionActual.getNombreCliente()+ "cancelada correctamente", Toast.LENGTH_SHORT).show();
                 mostrarDatosInscripcion(inscripcionActual);
             }
 

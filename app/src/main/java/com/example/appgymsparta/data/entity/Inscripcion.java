@@ -1,20 +1,14 @@
 package com.example.appgymsparta.data.entity;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@Entity(tableName = "inscripciones")
 public class Inscripcion {
 
-    @PrimaryKey(autoGenerate = true)
-    private int idInscripcion; // Mantenido para Room y compatibilidad temporal
+    private int idInscripcion;
 
     @DocumentId
     private String id;
@@ -30,12 +24,11 @@ public class Inscripcion {
     private double precioPagado;
     private String estado;
 
-    // Constructor vacío (requerido por Firestore y Room)
+    // Constructor vacío (requerido por Firestore)
     public Inscripcion() {
     }
 
     // Constructor completo con IDs String (para Firestore)
-    @Ignore
     public Inscripcion(String id, String idCliente, String idMembresia, String nombreCliente, String dniCliente, String nombreMembresia, String fechaInicio, String fechaVencimiento, double precioPagado, String estado) {
         this.id = id;
         this.idCliente = idCliente;
@@ -49,8 +42,7 @@ public class Inscripcion {
         this.estado = estado;
     }
 
-    // Constructor sin ID de documento (para nuevos registros en Firestore)
-    @Ignore
+    // Constructor sin ID de documento (para nuevos registros)
     public Inscripcion(String idCliente, String idMembresia, String nombreCliente, String dniCliente, String nombreMembresia, LocalDate fechaInicio, LocalDate fechaVencimiento, double precioPagado, String estado) {
         this.idCliente = idCliente;
         this.idMembresia = idMembresia;

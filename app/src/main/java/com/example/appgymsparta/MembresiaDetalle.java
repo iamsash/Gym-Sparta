@@ -115,6 +115,13 @@ public class MembresiaDetalle extends AppCompatActivity {
             tvStatusBadge.setTextColor(getColor(R.color.red_accent));
             btnCambiarEstado.setText("ACTIVAR MEMBRESÍA");
         }
+
+        if(membresia.getPrecio() > 500.00 ){
+            Toast.makeText(this, "plan premium",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "plan regular",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupListeners() {
